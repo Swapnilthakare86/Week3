@@ -99,3 +99,17 @@ exports.deleteLeaveRequest = async (id) => {
     );
   });
 };
+
+// GET BY EMPLOYEE ID
+exports.getLeaveRequestsByEmployeeId = async (empId) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM leave_request WHERE employee_id = ?",
+      [empId],
+      (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      }
+    );
+  });
+};

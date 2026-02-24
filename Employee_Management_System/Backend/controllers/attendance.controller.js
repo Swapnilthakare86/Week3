@@ -21,7 +21,8 @@ exports.getAllAttendance = async (req, res) => {
 exports.getAttendanceById = async (req, res) => {
   try {
     const rows = await Attendance.getAttendanceById(req.params.id);
-    if (!rows.length) return res.status(404).json({ message: "Attendance not found" });
+    if (!rows.length) 
+      return res.status(404).json({ message: "Attendance not found" });
     res.json(rows[0]);
   } catch (err) {
     res.status(500).json(err);
@@ -31,7 +32,8 @@ exports.getAttendanceById = async (req, res) => {
 exports.updateAttendance = async (req, res) => {
   try {
     const rows = await Attendance.getAttendanceById(req.params.id);
-    if (!rows.length) return res.status(404).json({ message: "Attendance not found" });
+    if (!rows.length)
+       return res.status(404).json({ message: "Attendance not found" });
 
     await Attendance.updateAttendance(req.params.id, req.body);
     res.json({ message: "Attendance updated successfully" });

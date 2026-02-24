@@ -17,6 +17,8 @@ const leaveRequestRoutes = require("./routes/leaveRequest.routes");
 const companyRoutes = require("./routes/company.routes");
 const masterDataRoutes = require("./routes/masterData.routes");
 
+
+
 app.use(express.json());
 
 app.use("/api/employees",employeeRoutes);
@@ -28,6 +30,7 @@ app.use("/api/locations", locationRoutes);
 app.use("/api/leave-requests", leaveRequestRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/master-data", masterDataRoutes);
+
 app.use(errorHandler);
 
 app.listen(PORT,()=>{
