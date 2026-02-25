@@ -8,23 +8,16 @@ exports.createAttendance = async (data) => {
     VALUES (?, ?, ?, ?, ?, ?)
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [
-        data.employee_id,
-        data.attendance_date,
-        data.check_in,
-        data.check_out,
-        data.attendance_status_id,
-        data.remarks
-      ],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.employee_id,
+    data.attendance_date,
+    data.check_in,
+    data.check_out,
+    data.attendance_status_id,
+    data.remarks
+  ]);
+
+  return result;
 };
 
 // GET ALL
@@ -44,12 +37,8 @@ exports.getAllAttendance = async () => {
     JOIN employee e ON a.employee_id = e.employee_id
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(sql, (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const [rows] = await db.execute(sql);
+  return rows;
 };
 
 // GET BY ID
@@ -69,12 +58,8 @@ exports.getAttendanceById = async (id) => {
     WHERE a.attendance_id = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(sql, [id], (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const [rows] = await db.execute(sql, [id]);
+  return rows;
 };
 
 // UPDATE
@@ -86,36 +71,25 @@ exports.updateAttendance = async (id, data) => {
     WHERE attendance_id = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [
-        data.employee_id,
-        data.attendance_date,
-        data.check_in,
-        data.check_out,
-        data.attendance_status_id,
-        data.remarks,
-        id
-      ],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.employee_id,
+    data.attendance_date,
+    data.check_in,
+    data.check_out,
+    data.attendance_status_id,
+    data.remarks,
+    id
+  ]);
+
+  return result;
 };
 
 // DELETE
 exports.deleteAttendance = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "DELETE FROM attendance WHERE attendance_id = ?",
-      [id],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(
+    "DELETE FROM attendance WHERE attendance_id = ?",
+    [id]
+  );
+
+  return result;
 };

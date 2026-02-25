@@ -8,50 +8,34 @@ exports.createLeaveRequest = async (data) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [
-        data.employee_id,
-        data.leave_type_id,
-        data.start_date,
-        data.end_date,
-        data.total_days,
-        data.reason,
-        data.status_id,
-        data.applied_on,
-        data.approved_by
-      ],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.employee_id,
+    data.leave_type_id,
+    data.start_date,
+    data.end_date,
+    data.total_days,
+    data.reason,
+    data.status_id,
+    data.applied_on,
+    data.approved_by
+  ]);
+
+  return result;
 };
 
 // GET ALL
 exports.getAllLeaveRequests = async () => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM leave_request", (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const [rows] = await db.execute("SELECT * FROM leave_request");
+  return rows;
 };
 
 // GET BY ID
 exports.getLeaveRequestById = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM leave_request WHERE leave_request_id = ?",
-      [id],
-      (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      }
-    );
-  });
+  const [rows] = await db.execute(
+    "SELECT * FROM leave_request WHERE leave_request_id = ?",
+    [id]
+  );
+  return rows;
 };
 
 // UPDATE
@@ -63,53 +47,36 @@ exports.updateLeaveRequest = async (id, data) => {
     WHERE leave_request_id = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [
-        data.employee_id,
-        data.leave_type_id,
-        data.start_date,
-        data.end_date,
-        data.total_days,
-        data.reason,
-        data.status_id,
-        data.applied_on,
-        data.approved_by,
-        id
-      ],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.employee_id,
+    data.leave_type_id,
+    data.start_date,
+    data.end_date,
+    data.total_days,
+    data.reason,
+    data.status_id,
+    data.applied_on,
+    data.approved_by,
+    id
+  ]);
+
+  return result;
 };
 
 // DELETE
 exports.deleteLeaveRequest = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "DELETE FROM leave_request WHERE leave_request_id = ?",
-      [id],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(
+    "DELETE FROM leave_request WHERE leave_request_id = ?",
+    [id]
+  );
+  return result;
 };
 
 // GET BY EMPLOYEE ID
 exports.getLeaveRequestsByEmployeeId = async (empId) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM leave_request WHERE employee_id = ?",
-      [empId],
-      (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      }
-    );
-  });
+  const [rows] = await db.execute(
+    "SELECT * FROM leave_request WHERE employee_id = ?",
+    [empId]
+  );
+  return rows;
 };

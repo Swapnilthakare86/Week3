@@ -1,55 +1,64 @@
 const Location = require("../models/location.model");
 
-exports.createLocation = async (req, res) => {
+exports.createLocation = async (req, res, next) => {
   try {
     const result = await Location.createLocation(req.body);
-    res.json({ message: "Location created", id: result.insertId });
+    res.status(201).json({
+      message: "Location created",
+      id: result.insertId
+    });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.getAllLocations = async (req, res) => {
+exports.getAllLocations = async (req, res, next) => {
   try {
     const rows = await Location.getAllLocations();
     res.json(rows);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.getLocationById = async (req, res) => {
+exports.getLocationById = async (req, res, next) => {
   try {
     const rows = await Location.getLocationById(req.params.id);
-    if (!rows.length) 
-        return res.status(404).json({ message: "Location not found" });
+
+    if (!rows.length) {
+      return res.status(404).json({ message: "Location not found" });
+    }
+
     res.json(rows[0]);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.updateLocation = async (req, res) => {
+exports.updateLocation = async (req, res, next) => {
   try {
-    const rows = await Location.getLocationById(req.params.id);
-    if (!rows.length)
-         return res.status(404).json({ message: "Location not found" });
+    const result = await Location.updateLocation(req.params.id, req.body);
 
-    await Location.updateLocation(req.params.id, req.body);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Location not found" });
+    }
+
     res.json({ message: "Location updated successfully" });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.deleteLocation = async (req, res) => {
+exports.deleteLocation = async (req, res, next) => {
   try {
     const result = await Location.deleteLocation(req.params.id);
-    if (result.affectedRows === 0)
+
+    if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Location not found" });
+    }
 
     res.json({ message: "Location deleted successfully" });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };

@@ -7,36 +7,27 @@ exports.createDepartment = async (data) => {
     VALUES (?, ?)
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(sql, [data.company_id, data.department_name], (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+  const [result] = await db.execute(sql, [
+    data.company_id,
+    data.department_name
+  ]);
+
+  return result;
 };
 
 // GET ALL
 exports.getAllDepartments = async () => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM department", (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const [rows] = await db.execute("SELECT * FROM department");
+  return rows;
 };
 
 // GET BY ID
 exports.getDepartmentById = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM department WHERE department_id = ?",
-      [id],
-      (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      }
-    );
-  });
+  const [rows] = await db.execute(
+    "SELECT * FROM department WHERE department_id = ?",
+    [id]
+  );
+  return rows;
 };
 
 // UPDATE
@@ -47,28 +38,21 @@ exports.updateDepartment = async (id, data) => {
     WHERE department_id = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [data.company_id, data.department_name, id],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.company_id,
+    data.department_name,
+    id
+  ]);
+
+  return result;
 };
 
 // DELETE
 exports.deleteDepartment = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "DELETE FROM department WHERE department_id = ?",
-      [id],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(
+    "DELETE FROM department WHERE department_id = ?",
+    [id]
+  );
+
+  return result;
 };

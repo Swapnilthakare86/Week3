@@ -1,58 +1,68 @@
 const LeaveRequest = require("../models/leaveRequest.model");
 
-exports.createLeave = async (req, res) => {
+exports.createLeave = async (req, res, next) => {
   try {
     const result = await LeaveRequest.createLeaveRequest(req.body);
-    res.json({ message: "Leave request created", id: result.insertId });
+    res.status(201).json({
+      message: "Leave request created",
+      id: result.insertId
+    });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.getAllLeaves = async (req, res) => {
+exports.getAllLeaves = async (req, res, next) => {
   try {
     const rows = await LeaveRequest.getAllLeaveRequests();
     res.json(rows);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.getLeaveById = async (req, res) => {
+exports.getLeaveById = async (req, res, next) => {
   try {
     const rows = await LeaveRequest.getLeaveRequestById(req.params.id);
+
     if (!rows.length) {
       return res.status(404).json({ message: "Leave request not found" });
     }
+
     res.json(rows[0]);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.updateLeave = async (req, res) => {
+exports.updateLeave = async (req, res, next) => {
   try {
-    const rows = await LeaveRequest.getLeaveRequestById(req.params.id);
-    if (!rows.length) {
-      return res.status(404).json({ message: "Leave request not found" });
-    }
+    const result = await LeaveRequest.updateLeaveRequest(
+      req.params.id,
+      req.body
+    );
 
-    await LeaveRequest.updateLeaveRequest(req.params.id, req.body);
-    res.json({ message: "Leave request updated successfully" });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
-
-exports.deleteLeave = async (req, res) => {
-  try {
-    const result = await LeaveRequest.deleteLeaveRequest(req.params.id);
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Leave request not found" });
     }
+
+    res.json({ message: "Leave request updated successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteLeave = async (req, res, next) => {
+  try {
+    const result = await LeaveRequest.deleteLeaveRequest(req.params.id);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Leave request not found" });
+    }
+
     res.json({ message: "Leave request deleted successfully" });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
@@ -63,7 +73,9 @@ exports.getLeavesByEmployeeId = async (req, res, next) => {
     );
 
     if (!rows.length) {
-      return res.status(404).json({ message: "No leave requests found for this employee" });
+      return res
+        .status(404)
+        .json({ message: "No leave requests found for this employee" });
     }
 
     res.json(rows);

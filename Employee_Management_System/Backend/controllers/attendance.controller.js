@@ -1,55 +1,62 @@
 const Attendance = require("../models/attendance.model");
 
-exports.createAttendance = async (req, res) => {
+exports.createAttendance = async (req, res, next) => {
   try {
     const result = await Attendance.createAttendance(req.body);
-    res.json({ message: "Attendance created", id: result.insertId });
+    res.status(201).json({
+      message: "Attendance created",
+      id: result.insertId
+    });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.getAllAttendance = async (req, res) => {
+exports.getAllAttendance = async (req, res, next) => {
   try {
     const rows = await Attendance.getAllAttendance();
     res.json(rows);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.getAttendanceById = async (req, res) => {
+exports.getAttendanceById = async (req, res, next) => {
   try {
     const rows = await Attendance.getAttendanceById(req.params.id);
-    if (!rows.length) 
+    if (!rows.length) {
       return res.status(404).json({ message: "Attendance not found" });
+    }
     res.json(rows[0]);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.updateAttendance = async (req, res) => {
+exports.updateAttendance = async (req, res, next) => {
   try {
-    const rows = await Attendance.getAttendanceById(req.params.id);
-    if (!rows.length)
-       return res.status(404).json({ message: "Attendance not found" });
+    const result = await Attendance.updateAttendance(req.params.id, req.body);
 
-    await Attendance.updateAttendance(req.params.id, req.body);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Attendance not found" });
+    }
+
     res.json({ message: "Attendance updated successfully" });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.deleteAttendance = async (req, res) => {
+exports.deleteAttendance = async (req, res, next) => {
   try {
     const result = await Attendance.deleteAttendance(req.params.id);
-    if (result.affectedRows === 0)
+
+    if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Attendance not found" });
+    }
 
     res.json({ message: "Attendance deleted successfully" });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };

@@ -12,4 +12,5 @@ npm install dotenv
 
 
 Run App-
-npx nodemon app.js
+- npm start
+- npm run dev

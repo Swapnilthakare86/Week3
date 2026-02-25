@@ -8,47 +8,31 @@ exports.createLocation = async (data) => {
     VALUES (?, ?, ?, ?, ?, ?)
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [
-        data.company_id,
-        data.location_name,
-        data.address,
-        data.city,
-        data.state,
-        data.country
-      ],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.company_id,
+    data.location_name,
+    data.address,
+    data.city,
+    data.state,
+    data.country
+  ]);
+
+  return result;
 };
 
 // GET ALL
 exports.getAllLocations = async () => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM location", (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const [rows] = await db.execute("SELECT * FROM location");
+  return rows;
 };
 
 // GET BY ID
 exports.getLocationById = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM location WHERE location_id = ?",
-      [id],
-      (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      }
-    );
-  });
+  const [rows] = await db.execute(
+    "SELECT * FROM location WHERE location_id = ?",
+    [id]
+  );
+  return rows;
 };
 
 // UPDATE
@@ -59,36 +43,24 @@ exports.updateLocation = async (id, data) => {
     WHERE location_id = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [
-        data.company_id,
-        data.location_name,
-        data.address,
-        data.city,
-        data.state,
-        data.country,
-        id
-      ],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.company_id,
+    data.location_name,
+    data.address,
+    data.city,
+    data.state,
+    data.country,
+    id
+  ]);
+
+  return result;
 };
 
 // DELETE
 exports.deleteLocation = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "DELETE FROM location WHERE location_id = ?",
-      [id],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(
+    "DELETE FROM location WHERE location_id = ?",
+    [id]
+  );
+  return result;
 };

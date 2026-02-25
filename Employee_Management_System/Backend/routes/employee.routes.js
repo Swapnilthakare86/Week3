@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const employeeController = require("../controllers/employee.controller");
-const { validateEmployee } = require("../middleware/validation.middleware");
+const { createEmployeeValidation, updateEmployeeValidation } = require("../middleware/validation/employee.validation");
+const { validate } = require("../middleware/validate");
 
-router.post("/", validateEmployee, employeeController.createEmployee);
-router.put("/:id", validateEmployee, employeeController.updateEmployee);
+router.post("/",createEmployeeValidation,validate,employeeController.createEmployee);
+
+router.put("/:id",updateEmployeeValidation,validate,employeeController.updateEmployee);
 
 router.get("/", employeeController.getAllEmployees);
 router.get("/:id", employeeController.getEmployeeById);

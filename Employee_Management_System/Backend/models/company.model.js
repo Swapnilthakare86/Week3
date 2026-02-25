@@ -8,46 +8,30 @@ exports.createCompany = async (data) => {
     VALUES (?, ?, ?, ?, ?)
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [
-        data.company_name,
-        data.registration_number,
-        data.email,
-        data.phone,
-        data.created_at
-      ],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.company_name,
+    data.registration_number,
+    data.email,
+    data.phone,
+    data.created_at
+  ]);
+
+  return result;
 };
 
 // GET ALL
 exports.getAllCompanies = async () => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM company", (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const [rows] = await db.execute("SELECT * FROM company");
+  return rows;
 };
 
 // GET BY ID
 exports.getCompanyById = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM company WHERE company_id = ?",
-      [id],
-      (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      }
-    );
-  });
+  const [rows] = await db.execute(
+    "SELECT * FROM company WHERE company_id = ?",
+    [id]
+  );
+  return rows;
 };
 
 // UPDATE
@@ -58,34 +42,23 @@ exports.updateCompany = async (id, data) => {
     WHERE company_id = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [
-        data.company_name,
-        data.registration_number,
-        data.email,
-        data.phone,
-        id
-      ],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.company_name,
+    data.registration_number,
+    data.email,
+    data.phone,
+    id
+  ]);
+
+  return result;
 };
 
 // DELETE
 exports.deleteCompany = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "DELETE FROM company WHERE company_id = ?",
-      [id],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(
+    "DELETE FROM company WHERE company_id = ?",
+    [id]
+  );
+
+  return result;
 };

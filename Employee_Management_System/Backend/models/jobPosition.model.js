@@ -7,36 +7,27 @@ exports.createJobPosition = async (data) => {
     VALUES (?, ?)
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(sql, [data.department_id, data.position_title], (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+  const [result] = await db.execute(sql, [
+    data.department_id,
+    data.position_title
+  ]);
+
+  return result;
 };
 
 // GET ALL
 exports.getAllJobPositions = async () => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM job_position", (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const [rows] = await db.execute("SELECT * FROM job_position");
+  return rows;
 };
 
 // GET BY ID
 exports.getJobPositionById = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM job_position WHERE job_position_id = ?",
-      [id],
-      (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      }
-    );
-  });
+  const [rows] = await db.execute(
+    "SELECT * FROM job_position WHERE job_position_id = ?",
+    [id]
+  );
+  return rows;
 };
 
 // UPDATE
@@ -47,28 +38,21 @@ exports.updateJobPosition = async (id, data) => {
     WHERE job_position_id = ?
   `;
 
-  return new Promise((resolve, reject) => {
-    db.query(
-      sql,
-      [data.department_id, data.position_title, id],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(sql, [
+    data.department_id,
+    data.position_title,
+    id
+  ]);
+
+  return result;
 };
 
 // DELETE
 exports.deleteJobPosition = async (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "DELETE FROM job_position WHERE job_position_id = ?",
-      [id],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
-  });
+  const [result] = await db.execute(
+    "DELETE FROM job_position WHERE job_position_id = ?",
+    [id]
+  );
+
+  return result;
 };

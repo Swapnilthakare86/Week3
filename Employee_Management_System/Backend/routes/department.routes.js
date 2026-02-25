@@ -2,10 +2,15 @@ const express = require("express");
 const router = express.Router();
 const departmentController = require("../controllers/department.controller");
 
-router.post("/", departmentController.createDepartment);
+const {createDepartmentValidation,updateDepartmentValidation} = require("../middleware/validation/department.validation");
+
+const { validate } = require("../middleware/validate");
+
+router.post("/", createDepartmentValidation, validate, departmentController.createDepartment);
+router.put("/:id", updateDepartmentValidation, validate, departmentController.updateDepartment);
+
 router.get("/", departmentController.getAllDepartments);
 router.get("/:id", departmentController.getDepartmentById);
-router.put("/:id", departmentController.updateDepartment);
 router.delete("/:id", departmentController.deleteDepartment);
 
 module.exports = router;

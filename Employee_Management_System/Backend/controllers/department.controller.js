@@ -1,55 +1,67 @@
 const Department = require("../models/department.model");
 
-exports.createDepartment = async (req, res) => {
+exports.createDepartment = async (req, res, next) => {
   try {
     const result = await Department.createDepartment(req.body);
-    res.json({ message: "Department created", id: result.insertId });
+    res.status(201).json({
+      message: "Department created",
+      id: result.insertId
+    });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.getAllDepartments = async (req, res) => {
+exports.getAllDepartments = async (req, res, next) => {
   try {
     const rows = await Department.getAllDepartments();
     res.json(rows);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.getDepartmentById = async (req, res) => {
+exports.getDepartmentById = async (req, res, next) => {
   try {
     const rows = await Department.getDepartmentById(req.params.id);
-    if (!rows.length) 
-        return res.status(404).json({ message: "Department not found" });
+
+    if (!rows.length) {
+      return res.status(404).json({ message: "Department not found" });
+    }
+
     res.json(rows[0]);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.updateDepartment = async (req, res) => {
+exports.updateDepartment = async (req, res, next) => {
   try {
-    const rows = await Department.getDepartmentById(req.params.id);
-    if (!rows.length) 
-        return res.status(404).json({ message: "Department not found" });
+    const result = await Department.updateDepartment(
+      req.params.id,
+      req.body
+    );
 
-    await Department.updateDepartment(req.params.id, req.body);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Department not found" });
+    }
+
     res.json({ message: "Department updated successfully" });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
 
-exports.deleteDepartment = async (req, res) => {
+exports.deleteDepartment = async (req, res, next) => {
   try {
     const result = await Department.deleteDepartment(req.params.id);
-    if (result.affectedRows === 0)
+
+    if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Department not found" });
+    }
 
     res.json({ message: "Department deleted successfully" });
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 };
