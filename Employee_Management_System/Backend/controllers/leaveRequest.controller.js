@@ -1,10 +1,11 @@
 const LeaveRequest = require("../models/leaveRequest.model");
 
-exports.createLeave = async (req, res, next) => {
+// ADD LEAVE
+exports.addLeave = async (req, res, next) => {
   try {
     const result = await LeaveRequest.createLeaveRequest(req.body);
     res.status(201).json({
-      message: "Leave request created",
+      message: "Leave request created successfully",
       id: result.insertId
     });
   } catch (err) {
@@ -12,6 +13,7 @@ exports.createLeave = async (req, res, next) => {
   }
 };
 
+// GET ALL LEAVES
 exports.getAllLeaves = async (req, res, next) => {
   try {
     const rows = await LeaveRequest.getAllLeaveRequests();
@@ -21,6 +23,7 @@ exports.getAllLeaves = async (req, res, next) => {
   }
 };
 
+// GET LEAVE BY ID
 exports.getLeaveById = async (req, res, next) => {
   try {
     const rows = await LeaveRequest.getLeaveRequestById(req.params.id);
@@ -35,6 +38,7 @@ exports.getLeaveById = async (req, res, next) => {
   }
 };
 
+// UPDATE LEAVE
 exports.updateLeave = async (req, res, next) => {
   try {
     const result = await LeaveRequest.updateLeaveRequest(
@@ -52,6 +56,7 @@ exports.updateLeave = async (req, res, next) => {
   }
 };
 
+// DELETE LEAVE
 exports.deleteLeave = async (req, res, next) => {
   try {
     const result = await LeaveRequest.deleteLeaveRequest(req.params.id);
@@ -66,7 +71,8 @@ exports.deleteLeave = async (req, res, next) => {
   }
 };
 
-exports.getLeavesByEmployeeId = async (req, res, next) => {
+// GET LEAVE BY EMPLOYEE ID
+exports.getLeaveByEmpId = async (req, res, next) => {
   try {
     const rows = await LeaveRequest.getLeaveRequestsByEmployeeId(
       req.params.empId

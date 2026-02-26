@@ -6,17 +6,7 @@ const db = require("../../config/db");
 exports.createAttendanceValidation = [
   body("employee_id")
     .notEmpty().withMessage("Employee ID is required")
-    .isInt().withMessage("Employee ID must be an integer")
-    .custom(async (employee_id) => {
-      const [rows] = await db.execute(
-        "SELECT employee_id FROM employee WHERE employee_id = ?",
-        [employee_id]
-      );
-      if (!rows.length) {
-        throw new Error("Employee does not exist");
-      }
-      return true;
-    }),
+    .isInt().withMessage("Employee ID must be an integer"),
 
   body("attendance_date")
     .notEmpty().withMessage("Attendance date is required")

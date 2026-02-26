@@ -25,16 +25,43 @@ exports.createLeaveRequest = async (data) => {
 
 // GET ALL
 exports.getAllLeaveRequests = async () => {
-  const [rows] = await db.execute("SELECT * FROM leave_request");
+  const [rows] = await db.execute(`
+    SELECT 
+      leave_request_id,
+      employee_id,
+      leave_type_id,
+       DATE_FORMAT(start_date, '%Y-%m-%d') AS start_date,
+      DATE_FORMAT(end_date, '%Y-%m-%d') AS end_date,
+      total_days,
+      reason,
+      status_id,
+     DATE_FORMAT(applied_on, '%Y-%m-%d') AS applied_on,
+      approved_by
+    FROM leave_request
+  `);
+
   return rows;
 };
 
 // GET BY ID
 exports.getLeaveRequestById = async (id) => {
-  const [rows] = await db.execute(
-    "SELECT * FROM leave_request WHERE leave_request_id = ?",
-    [id]
-  );
+  const [rows] = await db.execute(`
+    SELECT 
+      leave_request_id,
+      employee_id,
+      leave_type_id,
+      DATE_FORMAT(start_date, '%Y-%m-%d') AS start_date,
+      DATE_FORMAT(end_date, '%Y-%m-%d') AS end_date,
+      total_days,
+      reason,
+      status_id,
+      DATE_FORMAT(applied_on, '%Y-%m-%d') AS applied_on,
+      approved_by
+    FROM leave_request
+    WHERE leave_request_id = ?
+  `, [id]);
+
+
   return rows;
 };
 
@@ -74,9 +101,21 @@ exports.deleteLeaveRequest = async (id) => {
 
 // GET BY EMPLOYEE ID
 exports.getLeaveRequestsByEmployeeId = async (empId) => {
-  const [rows] = await db.execute(
-    "SELECT * FROM leave_request WHERE employee_id = ?",
-    [empId]
-  );
+  const [rows] = await db.execute(`
+    SELECT 
+      leave_request_id,
+      employee_id,
+      leave_type_id,
+       DATE_FORMAT(start_date, '%Y-%m-%d') AS start_date,
+      DATE_FORMAT(end_date, '%Y-%m-%d') AS end_date,
+      total_days,
+      reason,
+      status_id,
+      DATE_FORMAT(applied_on, '%Y-%m-%d') AS applied_on,
+      approved_by
+    FROM leave_request
+    WHERE employee_id = ?
+  `, [empId]);
+
   return rows;
 };

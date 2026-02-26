@@ -4,16 +4,15 @@ const db = require("../config/db");
 exports.createCompany = async (data) => {
   const sql = `
     INSERT INTO company
-    (company_name, registration_number, email, phone, created_at)
-    VALUES (?, ?, ?, ?, ?)
+    (company_name, registration_number, email, phone)
+    VALUES (?, ?, ?, ?)
   `;
 
   const [result] = await db.execute(sql, [
     data.company_name,
     data.registration_number,
     data.email,
-    data.phone,
-    data.created_at
+    data.phone
   ]);
 
   return result;
@@ -21,16 +20,34 @@ exports.createCompany = async (data) => {
 
 // GET ALL
 exports.getAllCompanies = async () => {
-  const [rows] = await db.execute("SELECT * FROM company");
+  const [rows] = await db.execute(`
+    SELECT 
+      company_id,
+      company_name,
+      registration_number,
+      email,
+      phone,
+      DATE_FORMAT(created_at, '%Y-%m-%d') AS created_at
+    FROM company
+  `);
+
   return rows;
 };
 
 // GET BY ID
 exports.getCompanyById = async (id) => {
-  const [rows] = await db.execute(
-    "SELECT * FROM company WHERE company_id = ?",
-    [id]
-  );
+  const [rows] = await db.execute(`
+    SELECT 
+      company_id,
+      company_name,
+      registration_number,
+      email,
+      phone,
+      DATE_FORMAT(created_at, '%Y-%m-%d') AS created_at
+    FROM company
+    WHERE company_id = ?
+  `, [id]);
+
   return rows;
 };
 

@@ -67,7 +67,6 @@ exports.createLeaveRequestValidation = [
 
   body("approved_by")
     .optional()
-    .isInt().withMessage("Approved by must be employee ID")
 ];
 
 
@@ -130,5 +129,4 @@ exports.updateLeaveRequestValidation = [
 
   body("approved_by")
     .optional()
-    .isInt().withMessage("Approved by must be employee ID")
 ];

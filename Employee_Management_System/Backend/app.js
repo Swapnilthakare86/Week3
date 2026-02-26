@@ -27,7 +27,7 @@ app.use("/api/departments", departmentRoutes);
 app.use("/api/job-positions", jobPositionRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/locations", locationRoutes);
-app.use("/api/leave-requests", leaveRequestRoutes);
+app.use("/api/leave", leaveRequestRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/master-data", masterDataRoutes);
 

@@ -10,20 +10,10 @@ const {
 const { validate } = require("../middleware/validate");
 
 // CREATE
-router.post(
-  "/",
-  createLocationValidation,
-  validate,
-  locationController.createLocation
-);
+router.post("/", createLocationValidation,validate,locationController.createLocation);
 
 // UPDATE
-router.put(
-  "/:id",
-  updateLocationValidation,
-  validate,
-  locationController.updateLocation
-);
+router.put("/:id",updateLocationValidation,validate,locationController.updateLocation);
 
 // READ
 router.get("/", locationController.getAllLocations);

@@ -2,29 +2,22 @@ const express = require("express");
 const router = express.Router();
 const leaveRequestController = require("../controllers/leaveRequest.controller");
 
-const {
-  createLeaveRequestValidation,
-  updateLeaveRequestValidation
-} = require("../middleware/validation/leaveRequest.validation");
+// CREATE
+router.post("/", leaveRequestController.addLeave);
 
-const { validate } = require("../middleware/validate");
-
-router.post(
-  "/",
-  createLeaveRequestValidation,
-  validate,
-  leaveRequestController.createLeave
-);
-
-router.put(
-  "/:id",
-  updateLeaveRequestValidation,
-  validate,
-  leaveRequestController.updateLeave
-);
-
+// READ ALL
 router.get("/", leaveRequestController.getAllLeaves);
+
+// READ BY ID
 router.get("/:id", leaveRequestController.getLeaveById);
+
+// UPDATE
+router.put("/:id", leaveRequestController.updateLeave);
+
+// DELETE
 router.delete("/:id", leaveRequestController.deleteLeave);
+
+// READ BY EMPLOYEE ID
+router.get("/employee/:empId", leaveRequestController.getLeaveByEmpId);
 
 module.exports = router;

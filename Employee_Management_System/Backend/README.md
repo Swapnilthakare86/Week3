@@ -13,4 +13,4 @@ npm install dotenv
 
 Run App-
 - npm start
-- npm run dev
+- npm run dev 
