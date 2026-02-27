@@ -42,7 +42,7 @@ exports.createEmployeeValidation = [
 
   body("gender")
     .notEmpty().withMessage("Gender is required")
-    .isIn(["male", "female", "other"])
+    .isIn(["Male", "Female", "Other"])
     .withMessage("Gender must be male, female or other"),
 ];
 
@@ -90,6 +90,6 @@ exports.updateEmployeeValidation = [
 
   body("gender")
     .optional()
-    .isIn(["male", "female", "other"])
+    .isIn(["Male", "Female", "Other"])
     .withMessage("Gender must be male, female or other"),
 ];

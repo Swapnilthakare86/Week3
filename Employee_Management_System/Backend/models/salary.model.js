@@ -24,7 +24,6 @@ exports.getAllSalaries = async () => {
       s.salary_id,
       s.basic_salary,
       s.deductions,
-      s.start_date,
       e.employee_id,
       e.employee_code,
       e.first_name,
@@ -44,7 +43,6 @@ exports.getSalaryById = async (id) => {
       s.salary_id,
       s.basic_salary,
       s.deductions,
-      s.start_date,
       e.employee_code,
       e.first_name,
       e.last_name
@@ -61,14 +59,13 @@ exports.getSalaryById = async (id) => {
 exports.updateSalary = async (id, data) => {
   const sql = `
     UPDATE salary 
-    SET basic_salary = ?, deductions = ?, start_date = ?
+    SET basic_salary = ?, deductions = ?
     WHERE salary_id = ?
   `;
 
   const [result] = await db.execute(sql, [
     data.basic_salary,
     data.deductions,
-    data.start_date,
     id,
   ]);
 
@@ -92,7 +89,6 @@ exports.getSalaryByEmployeeId = async (employeeId) => {
       s.salary_id,
       s.basic_salary,
       s.deductions,
-      s.start_date,
       e.employee_id,
       e.employee_code,
       e.first_name,

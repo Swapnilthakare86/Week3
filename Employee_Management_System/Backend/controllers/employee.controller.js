@@ -83,3 +83,14 @@ exports.deleteEmployee = async (req, res, next) => {
     next(err);
   }
 };
+
+
+exports.getManagers = async () => {
+  const sql = `
+    SELECT employee_id, first_name, last_name, role_id
+    FROM employee
+    WHERE role_id = 3
+  `;
+  const [rows] = await db.execute(sql);
+  return rows;
+};

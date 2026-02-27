@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+const cors = require("cors");
 const express =require("express")
 const app=express();
 
@@ -18,7 +18,7 @@ const companyRoutes = require("./routes/company.routes");
 const masterDataRoutes = require("./routes/masterData.routes");
 
 
-
+app.use(cors());
 app.use(express.json());
 
 app.use("/api/employees",employeeRoutes);

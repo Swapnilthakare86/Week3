@@ -1,5 +1,6 @@
 const Location = require("../models/location.model");
 
+// CREATE
 exports.createLocation = async (req, res, next) => {
   try {
     const result = await Location.createLocation(req.body);
@@ -12,6 +13,7 @@ exports.createLocation = async (req, res, next) => {
   }
 };
 
+// GET ALL
 exports.getAllLocations = async (req, res, next) => {
   try {
     const rows = await Location.getAllLocations();
@@ -21,6 +23,7 @@ exports.getAllLocations = async (req, res, next) => {
   }
 };
 
+// GET BY ID
 exports.getLocationById = async (req, res, next) => {
   try {
     const rows = await Location.getLocationById(req.params.id);
@@ -35,6 +38,7 @@ exports.getLocationById = async (req, res, next) => {
   }
 };
 
+// UPDATE
 exports.updateLocation = async (req, res, next) => {
   try {
     const result = await Location.updateLocation(req.params.id, req.body);
@@ -49,6 +53,7 @@ exports.updateLocation = async (req, res, next) => {
   }
 };
 
+// DELETE
 exports.deleteLocation = async (req, res, next) => {
   try {
     const result = await Location.deleteLocation(req.params.id);
@@ -58,6 +63,21 @@ exports.deleteLocation = async (req, res, next) => {
     }
 
     res.json({ message: "Location deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// GET BY COMPANY ID
+exports.getLocationsByCompanyId = async (req, res, next) => {
+  try {
+    const rows = await Location.getLocationsByCompanyId(req.params.company_id);
+
+    if (!rows.length) {
+      return res.status(404).json({ message: "No locations found for this company" });
+    }
+
+    res.json(rows);
   } catch (err) {
     next(err);
   }

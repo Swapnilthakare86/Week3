@@ -6,8 +6,8 @@ exports.createEmployee = async (data) => {
     INSERT INTO Employee 
     (employee_code, first_name, last_name, email, phone, dob, gender,
      company_id, location_id, department_id, job_position_id,
-     employment_type_id, reporting_manager_id, role_id, hire_date)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+     employment_type_id, reporting_manager_id, hire_date)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
   `;
 
   const [result] = await db.execute(insertSql, [
@@ -24,7 +24,6 @@ exports.createEmployee = async (data) => {
     data.job_position_id,
     data.employment_type_id,
     data.reporting_manager_id,
-    data.role_id,
     data.hire_date
   ]);
 
@@ -37,20 +36,17 @@ exports.createEmployee = async (data) => {
       e.email,
       c.company_name,
       d.department_name,
-      j.position_title,
-      r.role_name
+      j.position_title
     FROM Employee e
     LEFT JOIN Company c ON e.company_id = c.company_id
     LEFT JOIN Department d ON e.department_id = d.department_id
     LEFT JOIN Job_Position j ON e.job_position_id = j.job_position_id
-    LEFT JOIN Role r ON e.role_id = r.role_id
     WHERE e.employee_id = ?
   `;
 
   const [rows] = await db.execute(selectSql, [result.insertId]);
   return rows[0];
 };
-
 // GET ALL
 exports.getAllEmployees = async () => {
   const sql = `
@@ -61,9 +57,13 @@ exports.getAllEmployees = async () => {
       e.last_name,
       e.email,
       e.gender,
+      e.phone,
+      DATE_FORMAT(e.dob, '%Y-%m-%d') AS dob,
+      DATE_FORMAT(e.hire_date, '%Y-%m-%d') AS hire_date,
       c.company_name,
       d.department_name,
       j.position_title,
+      e.role_id, 
       r.role_name
     FROM Employee e
     LEFT JOIN Company c ON e.company_id = c.company_id
@@ -86,6 +86,9 @@ exports.getEmployeeById = async (id) => {
       e.last_name,
       e.email,
       e.gender,
+      e.phone,
+      DATE_FORMAT(e.dob, '%Y-%m-%d') AS dob,
+      DATE_FORMAT(e.hire_date, '%Y-%m-%d') AS hire_date,
       c.company_name,
       d.department_name,
       j.position_title,
@@ -131,3 +134,5 @@ exports.deleteEmployee = async (id) => {
 
   return result;
 };
+
+

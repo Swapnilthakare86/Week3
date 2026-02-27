@@ -14,3 +14,7 @@ npm install dotenv
 Run App-
 - npm start
 - npm run dev 
+
+
+
+npm install cors

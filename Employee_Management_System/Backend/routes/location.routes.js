@@ -10,13 +10,18 @@ const {
 const { validate } = require("../middleware/validate");
 
 // CREATE
-router.post("/", createLocationValidation,validate,locationController.createLocation);
+router.post("/",createLocationValidation,validate,locationController.createLocation);
 
 // UPDATE
 router.put("/:id",updateLocationValidation,validate,locationController.updateLocation);
 
-// READ
+//  GET locations by company ID 
+router.get("/company/:company_id",locationController.getLocationsByCompanyId);
+
+// READ ALL
 router.get("/", locationController.getAllLocations);
+
+// READ BY ID
 router.get("/:id", locationController.getLocationById);
 
 // DELETE

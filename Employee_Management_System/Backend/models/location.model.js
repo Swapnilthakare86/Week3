@@ -64,3 +64,12 @@ exports.deleteLocation = async (id) => {
   );
   return result;
 };
+
+//  GET BY COMPANY ID
+exports.getLocationsByCompanyId = async (company_id) => {
+  const [rows] = await db.execute(
+    "SELECT * FROM location WHERE company_id = ?",
+    [company_id]
+  );
+  return rows;
+};
