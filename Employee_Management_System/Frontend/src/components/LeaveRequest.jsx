@@ -132,7 +132,7 @@ function LeaveRequest() {
         alert("Leave Request Sent To Manager");
       }
 
-      navigate("/leave-list");
+      navigate("/leaves");
 
     } catch(err) {
 
@@ -155,7 +155,7 @@ function LeaveRequest() {
           {isEdit && (
             <button
               className="btn btn-light btn-sm"
-              onClick={() => navigate("/leave-list")}
+              onClick={() => navigate("/leaves")}
             >
               Back
             </button>

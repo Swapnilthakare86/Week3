@@ -1,9 +1,12 @@
 const db = require("../config/db");
 
-// CREATE
+
+// ================= CREATE =================
+
 exports.createAttendance = async (data) => {
+
   const sql = `
-    INSERT INTO attendance 
+    INSERT INTO attendance
     (employee_id, attendance_date, check_in, check_out, attendance_status_id, remarks)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
@@ -20,54 +23,93 @@ exports.createAttendance = async (data) => {
   return result;
 };
 
-// GET ALL
+
+
+// ================= GET ALL =================
+
 exports.getAllAttendance = async () => {
+
   const sql = `
     SELECT 
       a.attendance_id,
-      a.attendance_date,
-      a.check_in,
-      a.check_out,
+
+      DATE_FORMAT(a.attendance_date,'%d-%m-%Y') AS attendance_date,
+
+      TIME_FORMAT(a.check_in,'%h:%i %p') AS check_in,
+
+      TIME_FORMAT(a.check_out,'%h:%i %p') AS check_out,
+
+      a.attendance_status_id,
       a.remarks,
+
       e.employee_id,
       e.employee_code,
       e.first_name,
       e.last_name
+
     FROM attendance a
-    JOIN employee e ON a.employee_id = e.employee_id
+    JOIN employee e 
+      ON a.employee_id = e.employee_id
+
+    ORDER BY a.attendance_date DESC
   `;
 
   const [rows] = await db.execute(sql);
+
   return rows;
 };
 
-// GET BY ID
+
+
+// ================= GET BY ID =================
+
 exports.getAttendanceById = async (id) => {
+
   const sql = `
     SELECT 
       a.attendance_id,
-      a.attendance_date,
-      a.check_in,
-      a.check_out,
+
+      DATE_FORMAT(a.attendance_date,'%d-%m-%Y') AS attendance_date,
+
+      TIME_FORMAT(a.check_in,'%h:%i %p') AS check_in,
+
+      TIME_FORMAT(a.check_out,'%h:%i %p') AS check_out,
+
+      a.attendance_status_id,
       a.remarks,
+
+      e.employee_id,
       e.employee_code,
       e.first_name,
       e.last_name
+
     FROM attendance a
-    JOIN employee e ON a.employee_id = e.employee_id
+    JOIN employee e 
+      ON a.employee_id = e.employee_id
+
     WHERE a.attendance_id = ?
   `;
 
   const [rows] = await db.execute(sql, [id]);
+
   return rows;
 };
 
-// UPDATE
+
+
+// ================= UPDATE =================
+
 exports.updateAttendance = async (id, data) => {
+
   const sql = `
     UPDATE attendance
-    SET employee_id = ?, attendance_date = ?, check_in = ?, check_out = ?, 
-        attendance_status_id = ?, remarks = ?
+    SET 
+      employee_id = ?,
+      attendance_date = ?,
+      check_in = ?,
+      check_out = ?,
+      attendance_status_id = ?,
+      remarks = ?
     WHERE attendance_id = ?
   `;
 
@@ -84,12 +126,18 @@ exports.updateAttendance = async (id, data) => {
   return result;
 };
 
-// DELETE
+
+
+// ================= DELETE =================
+
 exports.deleteAttendance = async (id) => {
-  const [result] = await db.execute(
-    "DELETE FROM attendance WHERE attendance_id = ?",
-    [id]
-  );
+
+  const sql = `
+    DELETE FROM attendance
+    WHERE attendance_id = ?
+  `;
+
+  const [result] = await db.execute(sql, [id]);
 
   return result;
 };

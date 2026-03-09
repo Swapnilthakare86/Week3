@@ -1,12 +1,17 @@
 function HomePage() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-      <div className="container-fluid">
-        <span className="navbar-brand fw-bold fs-4">
-          Employee Management System
-        </span>
-      </div>
-    </nav>
+    <div
+      className="d-flex flex-column justify-content-center align-items-center"
+      style={{ height: "80vh" }}
+    >
+      <h1 className="text-secondary fw-bold text-center">
+        Employee Management System
+      </h1>
+
+      <h2 className="text-secondary text-center">
+        Home Page
+      </h2>
+    </div>
   );
 }
 

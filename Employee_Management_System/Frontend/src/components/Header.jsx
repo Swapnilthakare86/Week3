@@ -1,58 +1,45 @@
+import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
+    <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand as={Link} to="/employees">
+        <Navbar.Brand as={Link} to="/">
           EMS
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarNav" />
-        <Navbar.Collapse id="navbarNav">
-          <Nav className="me-auto">
 
-             {/* Employee Link (no dropdown) */}
-            <Nav.Link as={Link} to="/employees">
-              Employee
-            </Nav.Link>
-
-            {/* Master Dropdown */}
-            <NavDropdown title="Master" id="master-dropdown">
-              <NavDropdown.Item as={Link} to="/companies">
-                Company
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/departments">
-                Department
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/locations">
-                Location
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/job-positions">
-                Job Position
-              </NavDropdown.Item>
-            </NavDropdown>
-
-           <Nav.Link as={Link} to="/salary">
-              Salary
-            </Nav.Link>
-            {/* Leave Dropdown */}
-            <NavDropdown title="Leave" id="leave-dropdown">
-              <NavDropdown.Item as={Link} to="/leave-add">
-                Apply Leave
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/leaves">
-                Leave List
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/manager-approval">
-                Manager Approval
-              </NavDropdown.Item>
-            </NavDropdown>
-
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll">
+          <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: "100px" }} navbarScroll>
+            <Nav.Link as={Link} to="/employees">Employee</Nav.Link>
+            <Nav.Link as={Link} to="/companies">Company</Nav.Link>
+            <Nav.Link as={Link} to="/departments">Department</Nav.Link>
+            <Nav.Link as={Link} to="/locations">Location</Nav.Link>
+            <Nav.Link as={Link} to="/job-positions">Job Position</Nav.Link>
+            <Nav.Link as={Link} to="/salary">Salary</Nav.Link>
+            <Nav.Link as={Link} to="/attendance">Attendance</Nav.Link>
+            <Nav.Link as={Link} to="/leave-add">Apply Leave</Nav.Link>
+            <Nav.Link as={Link} to="/leaves">Leave List</Nav.Link>
+            <Nav.Link as={Link} to="/manager-approval">Manager Approval</Nav.Link>
           </Nav>
+
+          <div className="d-flex align-items-center ms-auto">
+            <Form className="d-flex me-2">
+              <Form.Control type="search" placeholder="Search" className="me-2" />
+              <Button variant="outline-success">Search</Button>
+            </Form>
+
+            {/* Navigate to login */}
+            <Button variant="primary" onClick={() => navigate("/login")}>
+              Sign in
+            </Button>
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>
