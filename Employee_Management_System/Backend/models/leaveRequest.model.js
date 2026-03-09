@@ -7,7 +7,6 @@ exports.createLeaveRequest = async (data) => {
     (employee_id, leave_type_id, start_date, end_date, total_days, reason, status_id, applied_on, approved_by)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
-
   const [result] = await db.execute(sql, [
     data.employee_id,
     data.leave_type_id,
@@ -17,9 +16,8 @@ exports.createLeaveRequest = async (data) => {
     data.reason,
     data.status_id,
     data.applied_on,
-    data.approved_by
+    data.approved_by || null
   ]);
-
   return result;
 };
 
@@ -30,16 +28,15 @@ exports.getAllLeaveRequests = async () => {
       leave_request_id,
       employee_id,
       leave_type_id,
-       DATE_FORMAT(start_date, '%Y-%m-%d') AS start_date,
+      DATE_FORMAT(start_date, '%Y-%m-%d') AS start_date,
       DATE_FORMAT(end_date, '%Y-%m-%d') AS end_date,
       total_days,
       reason,
       status_id,
-     DATE_FORMAT(applied_on, '%Y-%m-%d') AS applied_on,
+      DATE_FORMAT(applied_on, '%Y-%m-%d') AS applied_on,
       approved_by
     FROM leave_request
   `);
-
   return rows;
 };
 
@@ -60,12 +57,10 @@ exports.getLeaveRequestById = async (id) => {
     FROM leave_request
     WHERE leave_request_id = ?
   `, [id]);
-
-
   return rows;
 };
 
-// UPDATE
+// UPDATE FULL LEAVE
 exports.updateLeaveRequest = async (id, data) => {
   const sql = `
     UPDATE leave_request
@@ -73,7 +68,6 @@ exports.updateLeaveRequest = async (id, data) => {
         total_days = ?, reason = ?, status_id = ?, applied_on = ?, approved_by = ?
     WHERE leave_request_id = ?
   `;
-
   const [result] = await db.execute(sql, [
     data.employee_id,
     data.leave_type_id,
@@ -86,7 +80,21 @@ exports.updateLeaveRequest = async (id, data) => {
     data.approved_by,
     id
   ]);
+  return result;
+};
 
+// UPDATE STATUS + APPROVED_BY ONLY
+exports.updateLeaveStatus = async (id, data) => {
+  const sql = `
+    UPDATE leave_request
+    SET status_id = ?, approved_by = ?
+    WHERE leave_request_id = ?
+  `;
+  const [result] = await db.execute(sql, [
+    data.status_id,
+    data.approved_by,
+    id
+  ]);
   return result;
 };
 
@@ -106,7 +114,7 @@ exports.getLeaveRequestsByEmployeeId = async (empId) => {
       leave_request_id,
       employee_id,
       leave_type_id,
-       DATE_FORMAT(start_date, '%Y-%m-%d') AS start_date,
+      DATE_FORMAT(start_date, '%Y-%m-%d') AS start_date,
       DATE_FORMAT(end_date, '%Y-%m-%d') AS end_date,
       total_days,
       reason,
@@ -116,6 +124,5 @@ exports.getLeaveRequestsByEmployeeId = async (empId) => {
     FROM leave_request
     WHERE employee_id = ?
   `, [empId]);
-
   return rows;
 };

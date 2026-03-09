@@ -44,6 +44,9 @@ exports.createEmployeeValidation = [
     .notEmpty().withMessage("Gender is required")
     .isIn(["Male", "Female", "Other"])
     .withMessage("Gender must be male, female or other"),
+
+    body("reporting_manager_id")
+    .optional(),
 ];
 
 

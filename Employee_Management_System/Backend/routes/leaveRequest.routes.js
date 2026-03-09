@@ -11,8 +11,11 @@ router.get("/", leaveRequestController.getAllLeaves);
 // READ BY ID
 router.get("/:id", leaveRequestController.getLeaveById);
 
-// UPDATE
+// UPDATE FULL LEAVE
 router.put("/:id", leaveRequestController.updateLeave);
+
+// UPDATE STATUS ONLY
+router.put("/status/:id", leaveRequestController.updateLeaveStatus); // ✅ no parentheses
 
 // DELETE
 router.delete("/:id", leaveRequestController.deleteLeave);

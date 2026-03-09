@@ -4,16 +4,14 @@ const db = require("../config/db");
 exports.createSalary = async (data) => {
   const sql = `
     INSERT INTO salary (employee_id, basic_salary, deductions, start_date)
-    VALUES (?,?,?,?)
+    VALUES (?, ?, ?, ?)
   `;
-
   const [result] = await db.execute(sql, [
     data.employee_id,
     data.basic_salary,
     data.deductions,
     data.start_date,
   ]);
-
   return result;
 };
 
@@ -24,6 +22,7 @@ exports.getAllSalaries = async () => {
       s.salary_id,
       s.basic_salary,
       s.deductions,
+      s.start_date,
       e.employee_id,
       e.employee_code,
       e.first_name,
@@ -31,7 +30,6 @@ exports.getAllSalaries = async () => {
     FROM salary s
     JOIN employee e ON s.employee_id = e.employee_id
   `;
-
   const [rows] = await db.execute(sql);
   return rows;
 };
@@ -43,6 +41,8 @@ exports.getSalaryById = async (id) => {
       s.salary_id,
       s.basic_salary,
       s.deductions,
+      s.start_date,
+      e.employee_id,
       e.employee_code,
       e.first_name,
       e.last_name
@@ -50,7 +50,6 @@ exports.getSalaryById = async (id) => {
     JOIN employee e ON s.employee_id = e.employee_id
     WHERE s.salary_id = ?
   `;
-
   const [rows] = await db.execute(sql, [id]);
   return rows;
 };
@@ -59,16 +58,15 @@ exports.getSalaryById = async (id) => {
 exports.updateSalary = async (id, data) => {
   const sql = `
     UPDATE salary 
-    SET basic_salary = ?, deductions = ?
+    SET basic_salary = ?, deductions = ?, start_date = ?
     WHERE salary_id = ?
   `;
-
   const [result] = await db.execute(sql, [
     data.basic_salary,
     data.deductions,
-    id,
+    data.start_date,
+    id, // correct parameter here
   ]);
-
   return result;
 };
 
@@ -78,7 +76,6 @@ exports.deleteSalary = async (id) => {
     "DELETE FROM salary WHERE salary_id = ?",
     [id]
   );
-
   return result;
 };
 
@@ -89,6 +86,7 @@ exports.getSalaryByEmployeeId = async (employeeId) => {
       s.salary_id,
       s.basic_salary,
       s.deductions,
+      s.start_date,
       e.employee_id,
       e.employee_code,
       e.first_name,
@@ -97,7 +95,6 @@ exports.getSalaryByEmployeeId = async (employeeId) => {
     JOIN employee e ON s.employee_id = e.employee_id
     WHERE e.employee_id = ?
   `;
-
   const [rows] = await db.execute(sql, [employeeId]);
   return rows;
 };
