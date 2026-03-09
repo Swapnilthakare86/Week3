@@ -348,7 +348,7 @@ function EmployeeCreate() {
                   <option value="">Select Location</option>
                   {locations.map(l => (
                     <option key={l.location_id} value={l.location_id}>
-                      {l.location_name} - {l.city}
+                      {l.location_name}({l.address},{l.city})
                     </option>
                   ))}
                 </select>

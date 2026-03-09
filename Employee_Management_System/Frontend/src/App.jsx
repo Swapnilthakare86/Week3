@@ -8,7 +8,6 @@ import EmployeeCreate from "./components/EmployeeCreate";
 import EmployeeUpdate from "./components/EmployeeUpdate";
 import LeaveRequest from "./components/LeaveRequest";
 import LeaveList from "./components/LeaveList";
-import LeaveEdit from "./components/LeaveEdit";
 import ManagerApproval from "./components/ManagerApproval";
 import CompanyManagement from "./components/CompanyManagement";
 import DepartmentManagement from "./components/DepartmentManagement";
@@ -38,10 +37,9 @@ return (
 <Route path="/add-employee" element={<EmployeeCreate />} />
 
 <Route path="/update-employee/:id" element={<EmployeeUpdate />} />
-
 <Route path="/leave-add" element={<LeaveRequest />} />
 <Route path="/leave-edit/:id" element={<LeaveRequest />} />
-<Route path="/leave-list" element={<LeaveList/>}/>
+<Route path="/leaves" element={<LeaveList />} />
 <Route path="/manager-approval" element={<ManagerApproval/>}/>
 <Route path="/companies" element={<CompanyManagement />} />
 <Route path="/departments" element={<DepartmentManagement/>} />

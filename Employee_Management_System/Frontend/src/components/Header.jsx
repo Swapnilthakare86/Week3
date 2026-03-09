@@ -44,7 +44,7 @@ function Header() {
               <NavDropdown.Item as={Link} to="/leave-add">
                 Apply Leave
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/leave-list">
+              <NavDropdown.Item as={Link} to="/leaves">
                 Leave List
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/manager-approval">

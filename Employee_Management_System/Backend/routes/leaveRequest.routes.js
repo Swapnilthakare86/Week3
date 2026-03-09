@@ -15,12 +15,12 @@ router.get("/:id", leaveRequestController.getLeaveById);
 router.put("/:id", leaveRequestController.updateLeave);
 
 // UPDATE STATUS ONLY
-router.put("/status/:id", leaveRequestController.updateLeaveStatus); // ✅ no parentheses
+router.put("/status/:id", leaveRequestController.updateLeaveStatus);
 
 // DELETE
 router.delete("/:id", leaveRequestController.deleteLeave);
 
-// READ BY EMPLOYEE ID
+// READ BY EMPLOYEE
 router.get("/employee/:empId", leaveRequestController.getLeaveByEmpId);
 
 module.exports = router;

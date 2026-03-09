@@ -11,13 +11,11 @@ const [statuses,setStatuses] = useState([]);
 
 const [employeeFilter,setEmployeeFilter] = useState("");
 
-
 // ================= FETCH DATA =================
 
 useEffect(()=>{
 fetchAll();
 },[]);
-
 
 const fetchAll = async ()=>{
 
@@ -33,7 +31,6 @@ setStatuses(statusRes.data.data || statusRes.data);
 
 };
 
-
 // ================= CANCEL LEAVE =================
 
 const cancelLeave = async(id)=>{
@@ -46,7 +43,6 @@ fetchAll();
 
 };
 
-
 // ================= GET EMPLOYEE NAME =================
 
 const getEmployee = (id)=>{
@@ -56,7 +52,6 @@ const emp = employees.find(e => e.employee_id === id);
 return emp ? `${emp.employee_code} - ${emp.first_name} ${emp.last_name}` : id;
 
 };
-
 
 // ================= GET LEAVE TYPE =================
 
@@ -68,7 +63,6 @@ return type ? type.value : id;
 
 };
 
-
 // ================= GET STATUS =================
 
 const getStatus = (id)=>{
@@ -79,6 +73,19 @@ return st ? st.value : id;
 
 };
 
+// ================= STATUS BADGE COLOR =================
+
+const getStatusBadge = (statusId)=>{
+
+const status = getStatus(statusId);
+
+if(status === "Pending") return "badge bg-warning";
+if(status === "Approved") return "badge bg-success";
+if(status === "Rejected") return "badge bg-danger";
+
+return "badge bg-secondary";
+
+};
 
 // ================= FILTER =================
 
@@ -127,8 +134,8 @@ onChange={(e)=>setEmployeeFilter(e.target.value)}
 <th>ID</th>
 <th>Employee</th>
 <th>Leave Type</th>
-<th>Start</th>
-<th>End</th>
+<th>Start Date</th>
+<th>End Date</th>
 <th>Total Days</th>
 <th>Status</th>
 <th>Action</th>
@@ -155,19 +162,27 @@ onChange={(e)=>setEmployeeFilter(e.target.value)}
 <td>{l.total_days}</td>
 
 <td>
-<span className="badge bg-warning">
+<span className={getStatusBadge(l.status_id)}>
 {getStatus(l.status_id)}
 </span>
 </td>
 
 <td>
 
+{/* Edit allowed only if Pending */}
+
+{getStatus(l.status_id) === "Pending" ? (
 <Link
 to={`/leave-edit/${l.leave_request_id}`}
 className="btn btn-sm btn-primary me-2"
 >
 Edit
 </Link>
+) : (
+<button className="btn btn-sm btn-secondary me-2" disabled>
+Edit
+</button>
+)}
 
 <button
 className="btn btn-sm btn-danger"
