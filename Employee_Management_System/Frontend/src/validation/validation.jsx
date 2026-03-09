@@ -104,3 +104,79 @@ export const validateCompany = (formData) => {
 
   return errors;
 };
+
+
+export const validateSalary = (formData) => {
+
+  const errors = {};
+
+  if (!formData.employee_id || formData.employee_id === "") {
+    errors.employee_id = "Employee is required.";
+  }
+
+  if (!formData.basic_salary) {
+    errors.basic_salary = "Basic salary is required.";
+  } 
+  else if (Number(formData.basic_salary) <= 0) {
+    errors.basic_salary = "Basic salary must be greater than 0.";
+  }
+
+  if (!formData.deductions && formData.deductions !== 0) {
+    errors.deductions = "Deductions are required.";
+  } 
+  else if (Number(formData.deductions) < 0) {
+    errors.deductions = "Deductions cannot be negative.";
+  }
+
+  if (
+    formData.basic_salary &&
+    formData.deductions &&
+    Number(formData.deductions) > Number(formData.basic_salary)
+  ) {
+    errors.deductions = "Deductions cannot be greater than basic salary.";
+  }
+
+  if (!formData.start_date) {
+    errors.start_date = "Salary date is required.";
+  }
+
+  return errors;
+};
+
+
+
+export const validateLeaveRequest = (formData) => {
+  const errors = {};
+
+  if (!formData.employee_id) {
+    errors.employee_id = "Employee is required.";
+  }
+
+  if (!formData.leave_type_id) {
+    errors.leave_type_id = "Leave type is required.";
+  }
+
+  if (!formData.start_date) {
+    errors.start_date = "Start date is required.";
+  }
+
+  if (!formData.end_date) {
+    errors.end_date = "End date is required.";
+  }
+
+  if (formData.start_date && formData.end_date) {
+    if (new Date(formData.end_date) < new Date(formData.start_date)) {
+      errors.end_date = "End date cannot be before start date.";
+    }
+  }
+
+  if (!formData.reason || formData.reason.trim() === "") {
+    errors.reason = "Reason is required.";
+  }
+
+  if (!formData.approved_by) {
+    errors.approved_by = "Manager selection is required.";
+  }
+
+  return errors;
+};

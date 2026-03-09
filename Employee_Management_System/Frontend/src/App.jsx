@@ -39,7 +39,8 @@ return (
 
 <Route path="/update-employee/:id" element={<EmployeeUpdate />} />
 
-<Route path="/apply-leave" element={<LeaveRequest/>}/>
+<Route path="/leave-add" element={<LeaveRequest />} />
+<Route path="/leave-edit/:id" element={<LeaveRequest />} />
 <Route path="/leave-list" element={<LeaveList/>}/>
 <Route path="/manager-approval" element={<ManagerApproval/>}/>
 <Route path="/companies" element={<CompanyManagement />} />
