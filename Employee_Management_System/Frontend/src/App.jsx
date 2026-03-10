@@ -8,7 +8,17 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import ForgotPassword from "./Pages/ForgotPassword";
 import EmployeeList from "./components/EmployeeList";
-// ...import other components
+import CompanyManagement from "./components/CompanyManagement";
+import DepartmentManagement from "./components/DepartmentManagement";
+import LocationManagement from "./components/LocationManagement";
+import JobPosition from "./components/JobPosition";
+import Salary from "./components/Salary";
+import Attendance from "./components/Attendance";
+import LeaveRequest from "./components/LeaveRequest";
+import LeaveList from "./components/LeaveList";
+import ManagerApproval from "./components/ManagerApproval";
+
+
 
 function App() {
   return (
@@ -29,7 +39,15 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/home" element={<HomePage />} />
               <Route path="/employees" element={<EmployeeList />} />
-              {/* Add all other routes */}
+              <Route path="/companies" element={<CompanyManagement />} />
+              <Route path="/departments" element={<DepartmentManagement />} />
+              <Route path="/locations" element={<LocationManagement />} />
+              <Route path="/job-positions" element={<JobPosition />} />
+              <Route path="/salary" element={<Salary />} />
+              <Route path="/attendance" element={< Attendance/>} />
+              <Route path="/leave-add" element={<LeaveRequest />} />
+              <Route path="/leaves" element={<LeaveList />} />
+              <Route path="/manager-approval" element={<ManagerApproval />} />
             </Routes>
           </div>
         </main>
